@@ -1,0 +1,40 @@
+.logo{
+    fill:#fff;
+ }
+
+ .navbar{
+    @apply mx-auto  w-[90%] p-3 font-bold;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Macan", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color:white;
+   /* animation: 3s ease-in 10 forwards syncWithBackground;*/
+ }
+
+ .navItems{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width:50%;
+    margin-right: 0.2em;
+ }
+
+ @keyframes syncWithBackground {
+   0%{
+      @apply bg-none text-black font-bold;
+   }
+   100%{
+      @apply bg-black text-white;
+   }
+   
+ }
+
+
+
+
