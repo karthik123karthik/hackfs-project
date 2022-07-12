@@ -12,10 +12,12 @@ contract GigTransaction is Ownable{
      uint256 public  orderID;
      uint public startTime; // to specify the timeinterval to complete the work
      uint public stakeAmount = 0.1 ether;
+     address public verifier;
+
      
      struct order{
         address client;
-        uint submissionTime;
+        uint submissionTime; // in days
         uint256 salary;
      }
      mapping(uint256 => order)public getOrder;
@@ -30,6 +32,9 @@ contract GigTransaction is Ownable{
     event startWork(uint submissionTime);
     
     //owner of the contract is the freelancer
+    constructor(address _verifier)payable{
+        verifier = _verifier;
+    }
 
      // function to make a order by client
      function makeRequest(uint _submissionTime,uint256 _salary)public {
@@ -49,6 +54,11 @@ contract GigTransaction is Ownable{
          (bool sent,) = address(this).call{value:msg.value}("");
          require(sent,"transaction in accept payment function failed");
          emit accepted(_orderId);
+     }
+
+     //function to get the smart contract balance
+     function giveBalanceOfEth()public view returns(uint){
+         return address(this).balance;
      }
 
      //function to reject the request by client
@@ -89,10 +99,17 @@ contract GigTransaction is Ownable{
        sendToFreelancer(false);
      } 
 
+     //modifier for only verifier
+    modifier onlyverifier(){
+         require(msg.sender==verifier,"you are not the verifier");
+         _;
+    }
+
      // function  where client can get his amount + penalty back if freelancer fails to complete the work
-     function claimPenalty(uint orderId)public{
-      require(getOrder[orderId].client == msg.sender,"you are not the client to receive penalty");
-       (bool sent,) = msg.sender.call{value:address(this).balance}("");
+     function claimPenalty(uint orderId)public onlyverifier{
+        uint time = getOrder[orderId].submissionTime * 1 days;
+        require(block.timestamp >= startTime + time,"please wait till submission time finishes");
+       (bool sent,) = payable(getOrder[orderId].client).call{value:address(this).balance}("");
        require(sent,"transaction failed");
        deleteOrder(orderId);
      }
