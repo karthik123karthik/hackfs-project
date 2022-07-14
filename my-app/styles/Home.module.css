@@ -1,48 +1,47 @@
-.container{
+.container {
   @apply h-[100vh] w-[100vw]  bg-homePageBackGroundColour1 bg-cover;
   animation: 20s ease-in-out infinite forwards herobackchange;
-  transition:none;
+  transition: none;
 }
 
-
-.searchPart{
-  @apply  p-20 mt-20;
+.searchPart {
+  @apply p-20 mt-32;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height:50vh;
-  text-align: center;
+  /* align-items: center; */
+  /* justify-content: center; */
+  height: 50vh;
+  /* text-align: center; */
 }
 
-.popular{
-  @apply flex flex-row  text-white justify-center p-5 text-white text-base;
+.popular {
+  @apply flex flex-row text-white p-20 text-white text-base;
 }
 
-.popularbtns{
-  @apply flex flex-row  w-[30%] justify-between ml-[5px] text-white ml-5 ;
+.popularbtns {
+  @apply flex flex-row  w-[30%] justify-between ml-[5px] text-white ml-5;
 }
 
-.popularbtn{
-  @apply border rounded-full px-2 hover:bg-white hover:text-black;
+.popularbtn {
+  @apply border rounded-full px-4 py-0.5 hover:bg-white hover:text-black;
 }
 @keyframes herobackchange {
-  0%{
-     @apply bg-homePageBackGroundColour2 bg-cover;
+  0% {
+    @apply bg-homePageBackGroundColour2 bg-cover;
   }
 
-  25%{
+  25% {
     @apply bg-homePageBackGroundColour3 bg-cover;
-  }  
+  }
 
-  50%{
+  50% {
     @apply bg-homePageBackGroundColour4 bg-cover;
   }
-  75%{
+  75% {
     @apply bg-homePageBackGroundColour5 bg-cover;
   }
 
-  100%{
+  100% {
     @apply bg-homePageBackGroundColour1 bg-cover;
   }
 }
