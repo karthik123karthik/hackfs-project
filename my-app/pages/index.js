@@ -8,7 +8,7 @@ import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState();
   const web3Ref = useRef();
 
   useEffect(() => {
