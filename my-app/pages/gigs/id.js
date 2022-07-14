@@ -18,8 +18,18 @@ useEffect(()=>{
         providerOptions:{},
         disableInjectedProvider:false
    });
+   const provider  = await getProviderOrSigner(false,web3Ref);
+   const contract = new Contract(
+    CONTRACT_ADDRESS,
+    CONTRACT_ABI,
+    provider
+   );
+   contract.on("request",()=>{
 
+   });
+   
    setUserandClient();
+
    },[]);
 
 
@@ -47,15 +57,18 @@ function renderOwner(){
 }
 
 
+
+
 function renderClient(){
 
     return(
         <>
          <div className={styles.selectService}>
            <button className="p-2 m-5 rounded bg-red-200">provide an order</button> 
-           <button className="p-2 m-5 rounded bg-red-200">chat with client</button> 
+           <button className="p-2 m-5 rounded bg-red-200">chat with freelancer</button> 
          </div>
-         <div className={styles.historySection}>            
+         <div className={styles.historySection}>
+                       
          </div>
          </>
     )

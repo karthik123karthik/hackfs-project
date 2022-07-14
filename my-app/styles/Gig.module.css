@@ -3,5 +3,5 @@
 }
 
 .historySection{
-    @apply border h-[50vh] bg-gray-200;
+    @apply border h-[50vh] bg-gray-100 h-[50vh] w-[100vw];
 }
