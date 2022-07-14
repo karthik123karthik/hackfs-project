@@ -6,13 +6,11 @@
 // global scope, and execute the script.
 const hre = require("hardhat");
 
-async function main() {
- 
+async function main() { 
   const gigTransactionContractFactory = await hre.ethers.getContractFactory("GigTransaction");
-  const GigTransactionContract = await gigTransactionContractFactory.deploy();
+  const GigTransactionContract = await gigTransactionContractFactory.deploy("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
   await GigTransactionContract.deployed();
   console.log("contract address is",GigTransactionContract.address);
-
 }
 
 // We recommend this pattern to be able to use async/await everywhere

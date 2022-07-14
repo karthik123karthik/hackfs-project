@@ -1,8 +1,8 @@
 import {useState,useRef,useEffect} from "react"
-import {providers} from "ethers"
 import Web3Modal from "web3modal"
 import {Navbar} from "../components/navbar";
-import styles from "../styles/Home.module.css"
+import styles from "../styles/Home.module.css";
+import {getProviderOrSigner} from "../utilities/index.js";
  
 export default function Home() {
   const [isWalletConnected,setIsWalletConnected] = useState(false);
@@ -11,36 +11,17 @@ export default function Home() {
   useEffect(()=>{
       if(!isWalletConnected){
         web3Ref.current = new Web3Modal({
-          network:"rinkeby",
+          network:"mumbai",
           providerOptions:{},
           disableInjectedProvider:false
         })
       }
   },[isWalletConnected]);
 
-  async function  getProviderOrSigner(needSigner=false){
-    try{
-    const provider = await web3Ref.current.connect();
-    const web3Provider = new providers.Web3Provider(provider);
-    const {chainId} = await web3Provider.getNetwork();
-    if(chainId!==4){
-      window.alert("please change the network to rinkeby");
-      return;
-    }
-     if(needSigner){
-      return web3Provider.getSigner();
-     }
-     return web3Provider;
-    }
-    catch(error){
-      console.log(error);
-    }
-  }
-
-
+ 
   async function connectWallet(){
     try{
-     const providerOrSigner = await getProviderOrSigner();
+     const providerOrSigner = await getProviderOrSigner(false,web3Ref);
      if(providerOrSigner)setIsWalletConnected(true);
     }
     catch(error){

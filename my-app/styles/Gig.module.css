@@ -1,0 +1,7 @@
+.selectService{
+    @apply border h-[50vh] bg-gray-200 flex justify-center items-center;
+}
+
+.historySection{
+    @apply border h-[50vh] bg-gray-200;
+}
