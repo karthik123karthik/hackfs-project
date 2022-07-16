@@ -9,7 +9,7 @@ export function GitForm() {
       action="#"
     >
       <label className={styles.label} htmlFor="describe">
-        Describe the job you need help with? - Please describe it in detail
+        Describe the job you helped a client with - Please describe it in detail
       </label>
       <textarea
         className={styles.gigForm__inputs}
@@ -34,7 +34,7 @@ export function GitForm() {
         <option value="backend">Backend</option>
         <option value="logo">Logo</option>
       </select>
-      <label className={styles.label} htmlFor="deadline">
+      {/* <label className={styles.label} htmlFor="deadline">
         When is the deadline? - From once you place your order
       </label>
       <input
@@ -44,9 +44,9 @@ export function GitForm() {
         type="date"
         style={{ width: 200, height: 35 }}
         required
-      />
+      /> */}
       <label className={styles.label} htmlFor="budget">
-        What is your budget for this job?
+        What did you charge for this job?
       </label>
       <input
         className={styles.gigForm__inputs}
