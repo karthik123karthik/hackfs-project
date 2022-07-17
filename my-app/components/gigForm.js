@@ -1,6 +1,6 @@
 import styles from "../styles/createGig.module.css";
 
-export function GitForm() {
+export function GigForm() {
   return (
     <form
       className={styles.createGigForm}
