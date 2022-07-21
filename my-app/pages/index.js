@@ -1,65 +1,15 @@
 import { useState, useRef, useEffect } from "react";
-import { providers } from "ethers";
-import Web3Modal from "web3modal";
 import { Navbar } from "../components/navbar";
 import { Footer } from "../components/footer";
 import styles from "../styles/Home.module.css";
 
 
+
 export default function Home() {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [address, setAddress] = useState();
-  const web3Ref = useRef();
-
-  useEffect(() => {
-    if (!isWalletConnected) {
-      web3Ref.current = new Web3Modal({
-        network: "rinkeby",
-        // cacheProvider: true,
-        providerOptions: {},
-        disableInjectedProvider: false,
-      });
-    }
-  }, [isWalletConnected]);
-
-  async function getProviderOrSigner(needSigner = false) {
-    try {
-      const provider = await web3Ref.current.connect();
-      const web3Provider = new providers.Web3Provider(provider);
-      const userAddress = await web3Provider.getSigner().getAddress();
-      setAddress(userAddress);
-      const { chainId } = await web3Provider.getNetwork();
-      if (chainId !== 4) {
-        window.alert("please change the network to rinkeby");
-        return;
-      }
-      if (needSigner) {
-        return web3Provider.getSigner();
-      }
-      return web3Provider;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function connectWallet() {
-    try {
-      const providerOrSigner = await getProviderOrSigner();
-      if (providerOrSigner) {
-        setIsWalletConnected(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+  
   return (
     <div className={styles.container}>
-      <Navbar
-        connectWallet={connectWallet}
-        isWalletConnected={isWalletConnected}
-        address={address}
-      />
+       <Navbar/>
       <div className={styles.searchPart}>
         <h1 className="text-[3em] text-white ">
           find the perfect freelance service for your bussiness
