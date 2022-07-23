@@ -1,22 +1,19 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.0;
 
-//contract address :  0x39F7489FD5fe0CF5EE2b52C48704e609c8Caf19D
+//contract address : 0x7b0F6fdC394A620D3095e69cC1f727A4660A4Ba3
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract GigTransaction is Ownable{
      //must be able to receive eth.
      // freelancer must be able to accept the order of the client
-     // must transfer all the received ethers to the freelancer or owner once approved by client;
-     address public client;
+     // must transfer all the received ethers to the freelancer or owner once approved by client
      uint256 public contractbalance;
      uint256 public  orderID;
      uint public startTime; // to specify the timeinterval to complete the work
-     uint public stakeAmount = 0.1 ether;
-     address public verifier;
-
-     
+     uint public stakeAmount = 0.001 ether;
+     address private verifier;     
      struct order{
         address client;
         uint submissionTime; // in days
@@ -25,13 +22,14 @@ contract GigTransaction is Ownable{
      mapping(uint256 => order)public getOrder;
 
     //events
-    event request(address sender,uint submissionTime,uint256 salary);
+    event request(address sender,uint submissionTime,uint256 salary,uint orderId);
     event approvework(uint256 orderId);
     event accepted(uint256 orderId);
     event rejected(uint256 orderId);
     event clientdeposited(address client,uint256 salary, uint submissionTime);
-    event workComplete(uint256 orderId);
     event startWork(uint submissionTime);
+    event  workNotCompleted(uint orderId);
+    event  amountReceived(uint orderId);
     
     //owner of the contract is the freelancer
     constructor(address _verifier)payable{
@@ -42,7 +40,7 @@ contract GigTransaction is Ownable{
      function makeRequest(uint _submissionTime,uint256 _salary)public {
         getOrder[orderID] = order(msg.sender, _submissionTime ,_salary);
         orderID++;
-        emit request(msg.sender,_submissionTime,_salary);      
+        emit request(msg.sender,_submissionTime,_salary,orderID-1);      
      }
 
      // function to delete a order
@@ -68,13 +66,14 @@ contract GigTransaction is Ownable{
       emit rejected(_orderId);
      }
 
+
      // client will send ether once his order is accepted
      function sendPaymenttosmartcontract(uint256 orderId)public payable{
          require(getOrder[orderId].client==msg.sender,"you are not the client of this order");
          require(getOrder[orderId].salary == msg.value,"please send the correct amount");
          (bool sent,) = address(this).call{value:msg.value}("");
          require(sent,"transaction in accept payment function failed"); 
-         emit clientdeposited(msg.sender,msg.value,getOrder[orderID].submissionTime); 
+         emit clientdeposited(msg.sender,msg.value,getOrder[orderId].submissionTime); 
          startTime = block.timestamp;
          emit startWork(startTime);      
      }
@@ -85,20 +84,15 @@ contract GigTransaction is Ownable{
 
      // a function which a freelancer can call after completing work
      function workCompleted(uint256 orderId)public{
-      emit workComplete(orderId); // once you receive this event stop the timer.
-      emit approvework(orderId);// client should approve his work
+        emit approvework(orderId);// client should approve his work
      }
 
-     // a function where a client can accept work of the freelancer
-     function acceptthework(uint orderId)public {
-      require(msg.sender == getOrder[orderId].client,"you are not the client");
-      sendToFreelancer(true);
-     }
+    
      
      // a function where a client can reject the work 
      function rejectthework(uint orderId)public{
        require(msg.sender == getOrder[orderId].client,"you are not the client");
-       sendToFreelancer(false);
+       emit workNotCompleted(orderId);
      } 
 
      //modifier for only verifier
@@ -111,19 +105,20 @@ contract GigTransaction is Ownable{
      function claimPenalty(uint orderId)public onlyverifier{
         uint time = getOrder[orderId].submissionTime * 1 days;
         require(block.timestamp >= startTime + time,"please wait till submission time finishes");
-       (bool sent,) = payable(getOrder[orderId].client).call{value:address(this).balance}("");
+       (bool sent,) = payable(getOrder[orderId].client).call{value:(getOrder[orderId].salary+stakeAmount)}("");
        require(sent,"transaction failed");
        deleteOrder(orderId);
      }
 
 
      // function to transfer freelancer the money
-     function sendToFreelancer(bool _workcompleted)public payable{
+     function sendToFreelancer(uint orderId)public payable{
+        require(getOrder[orderId].client==msg.sender,"you are not the client of this order");
         require(owner()!= address(0),"owner doenot exists");
-        require(_workcompleted,"work is not yet completed");
-         contractbalance = address(this).balance;
+         contractbalance = getOrder[orderId].salary+stakeAmount;
          (bool sent,) = payable(owner()).call{value:contractbalance}(" ");
          require(sent,"transaction failed");
+         emit amountReceived(orderId);
      }
 
 

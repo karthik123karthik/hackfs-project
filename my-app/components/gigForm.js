@@ -1,4 +1,4 @@
-import styles from "../styles/createGig.module.css";
+import styles from "../styles/CreateGig.module.css";
 
 export function GigForm() {
   return (

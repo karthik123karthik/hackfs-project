@@ -1,8 +1,8 @@
 import styles from "../styles/Navbar.module.css";
 import Link from "next/link";
-import { truncateAddress } from "../utils";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
-export function Navbar({ connectWallet, isWalletConnected, address }) {
+export function Navbar() {
   return (
     <nav className={styles.navbar}>
       <h1 className={styles.logo}>dLance</h1>
@@ -15,13 +15,9 @@ export function Navbar({ connectWallet, isWalletConnected, address }) {
             <a>Create Gig</a>
           </Link>
         </li>
-        {!isWalletConnected ? (
-          <li>
-            <a onClick={connectWallet}>Connect Wallet</a>
-          </li>
-        ) : (
-          <li label={address}>{truncateAddress(address)}</li>
-        )}
+        <li>
+        <ConnectButton    showBalance={false}/>
+        </li>
         <li>
           <a>Sign In</a>
         </li>

@@ -1,92 +1,43 @@
-import {useState,useRef,useEffect} from "react";
-import {Contract} from "ethers";
-import { getProviderOrSigner } from "../../utilities";
+import {useState,useEffect} from "react";
 import {CONTRACT_ADDRESS,CONTRACT_ABI} from "../../constants";
-import Web3Modal from "web3modal";
-import styles from "../../styles/Gig.module.css";
+import {useContract,useSigner} from "wagmi";
+import {Freelancer} from "../../components/freelancer";
+import {Client} from "../../components/client";
 
 
 export default function Gig(){
-   // must render two types of frontend one for user and other for freelancer
-   const [owner,setowner] =useState("");
-   const [client,setClient] =useState("");
-   const web3Ref = useRef();
+   const [owner,setOwner] =useState(null);
+   const [client,setClient] =useState(null);
+   const {data:signer} = useSigner();
+   const contract = useContract({
+      addressOrName: CONTRACT_ADDRESS,
+      contractInterface: CONTRACT_ABI,
+      signerOrProvider:signer
+    });  
 
-useEffect(()=>{
-    web3Ref.current = new Web3Modal({
-        network:"mumbai",
-        providerOptions:{},
-        disableInjectedProvider:false
-   });
-   const provider  = await getProviderOrSigner(false,web3Ref);
-   const contract = new Contract(
-    CONTRACT_ADDRESS,
-    CONTRACT_ABI,
-    provider
-   );
-   contract.on("request",()=>{
+   useEffect(()=>{
+      const run = async ()=>{
+         const Owner = await contract.owner();
+         setOwner(Owner.toString());
+         const client = await signer.getAddress();
+         setClient(client.toString());
+      }
+      run().catch(console.error);       
+   },[contract]);
 
-   });
+   function renderBody(){
+      if(owner == client){
+         return <Freelancer/>;
+      }
+      else{
+         return <Client/>
+      }
+   }
    
-   setUserandClient();
-
-   },[]);
-
-
-   async function setUserandClient(){
-    const signer  = await getProviderOrSigner(true,web3Ref);
-    const user = await signer.getAddress();
-    setClient(user);
-
-    const contract  = new Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
-        signer
-    );
-
-    const Owner = await contract.owner();
-    setowner(Owner);
-   }
-
-
-
-function renderOwner(){
-    return(
-        <h1>hello I am owner</h1>
-    )
-}
-
-
-
-
-function renderClient(){
-
+   
     return(
         <>
-         <div className={styles.selectService}>
-           <button className="p-2 m-5 rounded bg-red-200">provide an order</button> 
-           <button className="p-2 m-5 rounded bg-red-200">chat with freelancer</button> 
-         </div>
-         <div className={styles.historySection}>
-                       
-         </div>
-         </>
-    )
-}
-
-  
-  
-
- function renderBody(){      
-    if(client==owner) return renderOwner()
-    else return renderClient()
-   }
-
-
-
-    return(
-        <>
-         {renderBody()}
+        {owner && client && renderBody()}
         </>
     )
 }
