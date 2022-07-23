@@ -24,6 +24,20 @@ export function Client(){
     });
 
 
+
+
+    useContractEvent({
+        addressOrName:CONTRACT_ADDRESS,
+        contractInterface:CONTRACT_ABI,
+        eventName:"accepted",
+        listener : (event) => {
+            document.getElementsByClassName("makeRequestPage")[0].classList.add("hidden");
+            document.getElementsByClassName("sendToSmartContractPage")[0].classList.remove("hidden");
+            setOrderid(event[0]);
+        }
+    });
+
+
     useContractEvent({
         addressOrName:CONTRACT_ADDRESS,
         contractInterface:CONTRACT_ABI,
@@ -66,7 +80,7 @@ export function Client(){
         
         <div className="bg-slate-900">
                <h2 className="contact text-center border p-3 text-xl bg-gray-100 w-[80vw] mb-2 mx-auto">If You Have Any Problem Contact us at Address:xxxxxxxxxxxxxxxxx</h2>
-               <div className="makeRequestPage hidden h-[100vh] w-[80vw] mx-auto">
+               <div className="makeRequestPage h-[100vh] w-[80vw] mx-auto">
                   <iframe className="h-[100%] w-[100%]" src="https://code.hyperdapp.dev/flow/QmTr5Sp3WPmChSut6ZpYvkpxSSKM8eDVaEeUHkaUpE4VAe"></iframe>
                </div>
                <div className="sendToSmartContractPage hidden h-[100vh] w-[80vw] mx-auto">
@@ -76,7 +90,7 @@ export function Client(){
                <div className=" waitingForCompletion hidden bg-gray-100 text-2xl mx-auto  flex flex-col h-[100vh] w-[80%] justify-center border items-center">
                     <img src="/Loading.svg" className=" p-3 mb-5"></img>
                     <p>waiting for the completion of the work by the freelancer</p>
-               </div>
+               </div>               
                <div className=" acceptTheWorkPage bg-gray-200 hidden mx-auto text-2xl flex flex-col h-[100vh] w-[80%] justify-center border items-center">
                    <p>freelancer told that he have completed the work and asking for his salary</p>
                    <div className="flex w-[100%]items-center text-xl p-3 m-6 justify-between border w-[70%] bg-blue-50 ">

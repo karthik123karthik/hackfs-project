@@ -91,20 +91,23 @@ useContractEvent({
 
 
    return (
-      <div> 
-         <div className="rejectionPage flex h-[100vh] hidden flex-col justify-center items-center">
-            <h1>client rejected your work contact us if you want any help contact us</h1>
+      <div className="bg-slate-800"> 
+      <h2 className="contact text-center border p-3 text-xl bg-gray-100 w-[80vw] mb-2 mx-auto">If You Have Any Problem Contact us at Address:xxxxxxxxxxxxxxxxx</h2>
+         <div className="rejectionPage text-2xl  h-[100vh] w-[50vw] m-auto flex h-[100vh] bg-gray-100 flex-col justify-center items-center">
+            <img src="/cancel.png" className="w-[300px] mb-5"></img>
+            <h1>client rejected your work</h1>
          </div> 
 
-         <div className="waitingForClientReply hidden flex h-[100vh] flex-col justify-center items-center">
-                 <h1>waiting for client response</h1>     
+         <div className="waitingForClientReply  hidden flex h-[100vh] w-[50vw] m-auto  bg-gray-100 text-2xl flex-col justify-center items-center">
+                <img src="/Loading.svg" className="mb-5"></img>
+                 <h1>waiting for client response...</h1>     
          </div>
     
-        <div className="availableorders h-[100vh] flex flex-col items-center">
+        <div className="availableorders hidden h-[100vh] flex  flex-col items-center">
            { availableOrders.map((order,idx)=>{
             return(
                <div key={idx} className=" m-3 flex flex-col bg-gray-100 justify-center p-3 items-center w-[70%] align-center">
-               <strong>lable Id - [ {order.order_id} ]</strong>
+               <strong className="w-[100%] text-xl text-center mb-3 bg-blue-100">OrderId : {order.order_id}</strong>
                <label className="font-bold">client_address:</label> 
               <h2>{order.client_address}</h2>
               <label className="font-bold">submissionTime:</label> 
@@ -120,10 +123,11 @@ useContractEvent({
             })
          }
         </div>
-        <div className="acceptedorders hidden  h-[100vh] available-orders  flex flex-col items-center">
+        <div className="acceptedorders hidden h-[100vh] available-orders  flex flex-col items-center">
            { acceptedOrders.map((order,idx)=>{
             return(
                <div key={idx} className=" m-3 flex flex-col bg-gray-100 justify-center p-3 items-center w-[70%] align-center">
+                <strong className="w-[100%] text-xl text-center mb-3 bg-blue-100">OrderId : {order.order_id}</strong>
                <label className="font-bold">client_address:</label> 
               <h2>{order.client_address}</h2>
               <label className="font-bold">submissionTime:</label> 
