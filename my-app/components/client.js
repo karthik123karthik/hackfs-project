@@ -1,12 +1,13 @@
 import {useContractEvent,useSigner,useContract} from "wagmi";
 import {useState} from "react"
 import { CONTRACT_ADDRESS,CONTRACT_ABI } from "../constants"
+import {BigNumber, utils } from "ethers";
 
 export function Client(){
     const [orderid,setOrderid] = useState(null);
     const {data:signer} = useSigner();
-
-    useContract({
+    const [value,setValue] = useState("0");
+    const contract =    useContract({
         addressOrName:CONTRACT_ADDRESS,
         contractInterface:CONTRACT_ABI,
         signerOrProvider:signer
@@ -77,6 +78,7 @@ export function Client(){
         document.getElementsByClassName("successPage")[0].classList.remove("hidden")
         document.getElementsByClassName("acceptTheWorkPage")[0].classList.add("hidden");
     }
+// <iframe className="h-[90%] w-[100%]" src="https://code.hyperdapp.dev/flow/QmUPuXEbCE67bJdbeUUaDBNuei8U4VgK7tK6UrFjvprCHj"></iframe>
 
 
 
@@ -84,18 +86,31 @@ export function Client(){
          const tx = await contract.rejectthework(orderid);
          await tx.wait();
     }
+
+    function handleChange(e){
+        setValue(e.target.value);
+    }
+
+    async function sendPaymentToSmartContract(){
+       const tx = await contract.sendPaymenttosmartcontract(BigNumber.from(orderid),{value:utils.parseEther(value)});
+       await tx.wait();
+    }
     
     
     return (
         
         <div className="bg-slate-900">
-               <h2 className="contact text-center border p-3 text-xl bg-gray-100 w-[80vw] bg-amber-300 mb-2 mx-auto">If You Have Any Problem Contact us at Address:0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266</h2>
-               <div className="makeRequestPage h-[100vh] w-[80vw] mx-auto">
+               <h2 className="contact text-center  border p-3 text-xl bg-gray-100 w-[80vw] bg-amber-300 mb-2 mx-auto">If You Have Any Problem Contact us at Address:0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266</h2>
+               <div className="makeRequestPage hidden h-[100vh] w-[80vw] mx-auto">
                   <iframe className="h-[100%] w-[100%]" src="https://code.hyperdapp.dev/flow/QmSkiyqY4BMAdoJ5V6EMB3YCEREdhL21iU9whCgv5rGHzJ"></iframe>
                </div>
-               <div className="sendToSmartContractPage hidden h-[100vh] w-[80vw] mx-auto">
+               <div className="sendToSmartContractPage  h-[100vh] w-[80vw] mx-auto">
                    <p className="text  p-3 text-center text-xl bg-green-100">your order is accepted by  the freelancer please send the amount to smartcontract to allow freelancer to work.</p>
-                   <iframe className="h-[90%] w-[100%]" src="https://code.hyperdapp.dev/flow/QmUPuXEbCE67bJdbeUUaDBNuei8U4VgK7tK6UrFjvprCHj"></iframe>
+                    <div className="w-[80vw] flex flex-col   justify-center items-center mx-auto h-[75%] bg-gray-400">
+                        <label className="p-3 text-xl">Enter the amount</label>
+                        <input value={value} onChange={handleChange} type="number" className="w-[50%] text-gray-500 p-2 rounded"/>
+                        <button className="p-3 rounded bg-green-300 mt-5 hover:bg-green-100" onClick={sendPaymentToSmartContract} >submit</button>
+                    </div>    
                 </div>
                <div className=" waitingForCompletion hidden bg-gray-100 text-2xl mx-auto  flex flex-col h-[100vh] w-[80%] justify-center border items-center">
                     <img src="/Loading.svg" className=" p-3 mb-5"></img>
