@@ -1,11 +1,11 @@
 .container {
-  @apply h-[100vh] w-[100vw]  bg-homePageBackGroundColour1 bg-cover;
+  @apply h-[100vh]  w-[100vw]  bg-homePageBackGroundColour1 bg-cover;
   animation: 20s ease-in-out infinite forwards herobackchange;
   transition: none;
 }
 
 .searchPart {
-  @apply p-20 mt-32;
+  @apply p-10 mt-32;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -15,7 +15,7 @@
 }
 
 .popular {
-  @apply flex flex-row text-white p-20 text-white text-base;
+  @apply flex flex-row  text-white p-5 text-white text-base ;
 }
 
 .popularbtns {
