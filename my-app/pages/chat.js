@@ -1,4 +1,4 @@
-import styles from "../styles/Chat.module.css";
+import styles from "../styles/chat.module.css";
 import { ChatForm } from "../components/chatForm";
 
 export default function chat() {
