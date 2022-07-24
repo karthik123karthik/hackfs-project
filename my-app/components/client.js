@@ -106,11 +106,7 @@ export function Client(){
                </div>
                <div className="sendToSmartContractPage  h-[100vh] w-[80vw] mx-auto">
                    <p className="text  p-3 text-center text-xl bg-green-100">your order is accepted by  the freelancer please send the amount to smartcontract to allow freelancer to work.</p>
-                    <div className="w-[80vw] flex flex-col   justify-center items-center mx-auto h-[75%] bg-gray-400">
-                        <label className="p-3 text-xl">Enter the amount</label>
-                        <input value={value} onChange={handleChange} type="number" className="w-[50%] text-gray-500 p-2 rounded"/>
-                        <button className="p-3 rounded bg-green-300 mt-5 hover:bg-green-100" onClick={sendPaymentToSmartContract} >submit</button>
-                    </div>    
+                   <iframe className="h-[90%] w-[100%]" src="https://code.hyperdapp.dev/flow/QmUPuXEbCE67bJdbeUUaDBNuei8U4VgK7tK6UrFjvprCHj"></iframe>    
                 </div>
                <div className=" waitingForCompletion hidden bg-gray-100 text-2xl mx-auto  flex flex-col h-[100vh] w-[80%] justify-center border items-center">
                     <img src="/Loading.svg" className=" p-3 mb-5"></img>
