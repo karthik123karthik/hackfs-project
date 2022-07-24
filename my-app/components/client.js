@@ -19,6 +19,16 @@ export function Client(){
         listener : (event) => {
             document.getElementsByClassName("makeRequestPage")[0].classList.add("hidden");
             document.getElementsByClassName("sendToSmartContractPage")[0].classList.remove("hidden");
+        }
+    });
+
+    useContractEvent({
+        addressOrName:CONTRACT_ADDRESS,
+        contractInterface:CONTRACT_ABI,
+        eventName:"request",
+        listener : (event) => {
+            document.getElementsByClassName("makeRequestPage")[0].classList.add("hidden");
+            document.getElementsByClassName("waitingForCompletion")[0].classList.remove("hidden");
             setOrderid(event[0]);
         }
     });
@@ -31,7 +41,7 @@ export function Client(){
         contractInterface:CONTRACT_ABI,
         eventName:"accepted",
         listener : (event) => {
-            document.getElementsByClassName("makeRequestPage")[0].classList.add("hidden");
+            document.getElementsByClassName("waitingForCompletion")[0].classList.add("hidden");
             document.getElementsByClassName("sendToSmartContractPage")[0].classList.remove("hidden");
             setOrderid(event[0]);
         }
@@ -79,7 +89,7 @@ export function Client(){
     return (
         
         <div className="bg-slate-900">
-               <h2 className="contact text-center border p-3 text-xl bg-gray-100 w-[80vw] mb-2 mx-auto">If You Have Any Problem Contact us at Address:xxxxxxxxxxxxxxxxx</h2>
+               <h2 className="contact text-center border p-3 text-xl bg-gray-100 w-[80vw] bg-amber-300 mb-2 mx-auto">If You Have Any Problem Contact us at Address:0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266</h2>
                <div className="makeRequestPage h-[100vh] w-[80vw] mx-auto">
                   <iframe className="h-[100%] w-[100%]" src="https://code.hyperdapp.dev/flow/QmTr5Sp3WPmChSut6ZpYvkpxSSKM8eDVaEeUHkaUpE4VAe"></iframe>
                </div>
@@ -89,7 +99,7 @@ export function Client(){
                 </div>
                <div className=" waitingForCompletion hidden bg-gray-100 text-2xl mx-auto  flex flex-col h-[100vh] w-[80%] justify-center border items-center">
                     <img src="/Loading.svg" className=" p-3 mb-5"></img>
-                    <p>waiting for the completion of the work by the freelancer</p>
+                    <p>waiting for the  response from  the freelancer</p>
                </div>               
                <div className=" acceptTheWorkPage bg-gray-200 hidden mx-auto text-2xl flex flex-col h-[100vh] w-[80%] justify-center border items-center">
                    <p>freelancer told that he have completed the work and asking for his salary</p>
@@ -98,7 +108,7 @@ export function Client(){
                         <button className="rounded bg-red-200 text-black p-2 hover:bg-red-100" onClick={()=> workNotCompleted(orderid)}>workNotCompleted</button>
                    </div>
               </div>
-              <div className="successPage bg-gray-100  text-2xl w-[80%] mx-auto h-[100vh] flex flex-col justify-center items-center">
+              <div className="successPage bg-gray-100 hidden  text-2xl w-[80%] mx-auto h-[100vh] flex flex-col justify-center items-center">
                          <img src="/success.svg" className=" w-[300px] mb-6"></img>
                          <h2>Thank You for using dLance and your order is completed</h2>
               </div>

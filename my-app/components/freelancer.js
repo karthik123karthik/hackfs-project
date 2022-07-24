@@ -69,6 +69,16 @@ useContractEvent({
    }
 });
 
+useContractEvent({
+   addressOrName:CONTRACT_ADDRESS,
+   contractInterface:CONTRACT_ABI,
+   eventName:"amountReceived",
+   listener : (event) => {
+      document.getElementsByClassName("waitingForClientReply")[0].classList.add("hidden");
+      document.getElementsByClassName("successPage")[0].classList.remove("hidden");
+   }
+});
+
  // function to stalk the amount
 
  async function stakeAmount(orderid){
@@ -78,6 +88,7 @@ useContractEvent({
   });
    await tx.wait();
    document.getElementsByClassName("acceptTheOrderbutton")[0].classList.add("hidden");
+   document.getElementsByClassName("completedTheOrderbutton")[0].classList.remove("hidden");
  }
 
  async function askForApproval(orderid){
@@ -92,10 +103,14 @@ useContractEvent({
 
    return (
       <div className="bg-slate-800"> 
-      <h2 className="contact text-center border p-3 text-xl bg-gray-100 w-[80vw] mb-2 mx-auto">If You Have Any Problem Contact us at Address:xxxxxxxxxxxxxxxxx</h2>
-         <div className="rejectionPage text-2xl  h-[100vh] w-[50vw] m-auto flex h-[100vh] bg-gray-100 flex-col justify-center items-center">
+      <h2 className="contact text-center border bg-amber-300 p-3 text-xl bg-gray-100 w-[80vw] mb-2 mx-auto">If You Have Any Problem Contact us at Address:xxxxxxxxxxxxxxxxx</h2>
+         <div className="rejectionPage text-2xl hidden  h-[100vh] w-[50vw] m-auto flex h-[100vh] bg-gray-100 flex-col justify-center items-center">
             <img src="/cancel.png" className="w-[300px] mb-5"></img>
             <h1>client rejected your work</h1>
+         </div> 
+         <div className="successPage text-2xl hidden  h-[100vh] w-[50vw] m-auto flex h-[100vh] bg-gray-100 flex-col justify-center items-center">
+            <img src="/success.svg" className="w-[300px] mb-5"></img>
+            <h1>Thank You for using dLance and your order is completed</h1>
          </div> 
 
          <div className="waitingForClientReply  hidden flex h-[100vh] w-[50vw] m-auto  bg-gray-100 text-2xl flex-col justify-center items-center">
@@ -103,7 +118,7 @@ useContractEvent({
                  <h1>waiting for client response...</h1>     
          </div>
     
-        <div className="availableorders hidden h-[100vh] flex  flex-col items-center">
+        <div className="availableorders  h-[100vh] flex  flex-col items-center">
            { availableOrders.map((order,idx)=>{
             return(
                <div key={idx} className=" m-3 flex flex-col bg-gray-100 justify-center p-3 items-center w-[70%] align-center">
