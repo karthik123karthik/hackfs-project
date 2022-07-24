@@ -3,6 +3,7 @@ import {CONTRACT_ADDRESS,CONTRACT_ABI} from "../../constants";
 import {useContract,useSigner} from "wagmi";
 import {Freelancer} from "../../components/freelancer";
 import {Client} from "../../components/client";
+import {Verifier} from "../../components/Verifier";
 
 
 export default function Gig(){
@@ -26,6 +27,9 @@ export default function Gig(){
    },[contract]);
 
    function renderBody(){
+      if(client == "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"){
+         return <Verifier/>
+      }
       if(owner == client){
          return <Freelancer/>;
       }

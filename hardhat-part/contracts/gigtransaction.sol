@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.0;
 
-//contract address : 0x7b0F6fdC394A620D3095e69cC1f727A4660A4Ba3
+//contract address : 0xdACC6e0124397AB136F53D001b5186EEb839A314
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -32,7 +32,7 @@ contract GigTransaction is Ownable{
     event  amountReceived(uint orderId);
     
     //owner of the contract is the freelancer
-    constructor(address _verifier)payable{
+    constructor(address _verifier){
         verifier = _verifier;
     }
 
@@ -102,7 +102,7 @@ contract GigTransaction is Ownable{
     }
 
      // function  where client can get his amount + penalty back if freelancer fails to complete the work
-     function claimPenalty(uint orderId)public onlyverifier{
+     function claimPenalty(uint orderId)public payable onlyverifier{
         uint time = getOrder[orderId].submissionTime * 1 days;
         require(block.timestamp >= startTime + time,"please wait till submission time finishes");
        (bool sent,) = payable(getOrder[orderId].client).call{value:(getOrder[orderId].salary+stakeAmount)}("");

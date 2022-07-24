@@ -1,4 +1,4 @@
-export const  CONTRACT_ADDRESS = "0x7b0F6fdC394A620D3095e69cC1f727A4660A4Ba3";
+export const  CONTRACT_ADDRESS = "0xdACC6e0124397AB136F53D001b5186EEb839A314";
 export const CONTRACT_ABI = [
   {
     "inputs": [
@@ -8,7 +8,7 @@ export const CONTRACT_ABI = [
         "type": "address"
       }
     ],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
@@ -191,7 +191,7 @@ export const CONTRACT_ABI = [
     ],
     "name": "claimPenalty",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
